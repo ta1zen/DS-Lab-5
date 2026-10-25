@@ -16,7 +16,9 @@ def read_csv(file_path: str) -> pd.DataFrame:
     Returns:
     pd.DataFrame: Loaded data.
     """
-
+    data = pd.read_csv(file_path)
+    if data.empty:
+        raise ValueError("The CSV file is empty.")
     return data
 
 
@@ -32,7 +34,8 @@ def train_knn_classifier(X: np.array, y: np.array, k: int) -> KNeighborsClassifi
     Returns:
     KNeighborsClassifier: Trained K-NN model.
     """
-
+    model = KNeighborsClassifier(n_neighbors=min(k, len(X)))
+    model.fit(X, y)
     return model
 
 
@@ -47,7 +50,10 @@ def evaluate_model(y_true: np.array, y_pred: np.array) -> dict:
     Returns:
     dict: Evaluation metrics (accuracy, precision, recall, F1-score).
     """
-
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred, zero_division=0)
+    recall = recall_score(y_true, y_pred, zero_division=0)
+    f1 = f1_score(y_true, y_pred, zero_division=0)
     return {"Accuracy": accuracy, "Precision": precision, "Recall": recall, "F1-Score": f1}
 
 
